@@ -19,6 +19,7 @@ class AttendeeController extends Controller
      */
     public function index(Event $event)
     {
+        Gate::authorize('viewAny', $event);
         $attendees = $this->loadRelationships(
             $event->attendees()->latest()
         );
