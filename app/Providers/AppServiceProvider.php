@@ -26,9 +26,15 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(60)->by(
-	            $request->user()?->id ?: $request->ip()
-	          );
+            if ($request->user()) {
+                return Limit::perMinute(60)->by(
+                    $request->user()?->id ?: $request->ip()
+                );
+            } else {
+                return Limit::perMinute(20)->by(
+                    $request->user()?->id ?: $request->ip()
+                );
+            }
         });
 
         // Gate::define('update-event', function ($user, Event $event) {
