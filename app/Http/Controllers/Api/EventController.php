@@ -19,7 +19,6 @@ class EventController extends Controller
      */
     public function index()
     {
-        Gate::authorize('viewAny', Event::class);
         $query = $this->loadRelationships(Event::query());
 
         return EventResource::collection(
@@ -64,7 +63,7 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        Gate::authorize('update', $event);
+        Gate::authorize('update-event', $event);
         $event->update(
             $request->validate([
                 'name' => 'sometimes|string|max:255',
